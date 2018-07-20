@@ -1,35 +1,41 @@
 if [ "$EUID" -ne 0]
-  then echo "Favor, execute este script com sudo"
+  then echo "Please, execute as sudo."
   exit
 fi
 
 if [ -z "$1" ]
-        then echo "Use o nome do host como parametro" 
+        then echo "Please, specify the host name." 
         exit
 fi
 
-echo "Criando host $1.com"
+mkdir -p /var/www/com
+host_path="/var/www/com/$1"
+host_name="$1.com"
+admin_email="fernandorochaworld@gmail.com"
 
-mkdir -p /var/www/$1.com
-chown -R $USER:$USER /var/www/$1.com
-chmod -R 777 /var/www/$1.com
+echo "Creating host $host_name"
+
+mkdir -p $host_path
+chown -R $USER:$USER $host_path
+chmod -R 777 $host_path
 
 echo "<html>
   <head>
-    <title>Welcome to $1.com!</title>
+    <title>Welcome to $host_name!</title>
   </head>
   <body>
-    <h1>Success!  The $1.com virtual host is working!</h1>
+    <h1>Success!</h1>
+    <h2>www.$host_name VirtualHost is working!</h2>
   </body>
-</html>" > /var/www/$1.com/index.html
+</html>" > $host_path/index.html
 
 
 echo "<VirtualHost *:80>
-    ServerAdmin fernandorochaworld@gmail.com
-    ServerName $1.com
-    ServerAlias www.$1.com
-    DocumentRoot /var/www/$1.com
-        <Directory "/var/www/$1.com">
+    ServerAdmin $admin_email
+    ServerName $host_name
+    ServerAlias www.$host_name
+    DocumentRoot $host_path
+        <Directory "$host_path">
 #           AllowOverride All
                 Options Indexes FollowSymLinks MultiViews
                 AllowOverride all
@@ -40,16 +46,16 @@ echo "<VirtualHost *:80>
 
 chown www-data /etc/apache2/sites-available/$1.conf
 
-echo "Ativando host"
+echo "Enabling host"
 a2ensite $1
 service apache2 reload
 
-echo "Vhost $1 criado"
+echo "VirtualHost $1 created"
 
-echo "Criando Rotas"
+echo "Creating routes"
 echo "
-127.0.0.1       $1.com
-127.0.0.1       www.$1.com
+127.0.0.1       $host_name
+127.0.0.1       www.$host_name
 " >> /etc/hosts
 
-echo "pronto"
+echo "done"
