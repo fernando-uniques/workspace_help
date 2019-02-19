@@ -3,6 +3,7 @@
 #  exit
 #fi
 
+ws=/var/www/workspace_help
 cd $ws
 msg="`date` - auto_test - no error found"
 

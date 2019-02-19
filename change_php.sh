@@ -1,3 +1,4 @@
+# Exemplo: sudo ./change_php.sh 5.6 7.2
 if [ "$EUID" -ne 0]
   then echo "Favor, execute este script com sudo"
   exit
