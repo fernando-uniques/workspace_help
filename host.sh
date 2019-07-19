@@ -24,10 +24,11 @@ echo "<html>
     <title>Welcome to $host_name!</title>
   </head>
   <body>
-    <h1>Success!</h1>
+    <h1>Success! On <?=date('Y-m-d H:i:s');?></h1>
     <h2>www.$host_name VirtualHost is working!</h2>
+    <?php phpinfo(); ?>
   </body>
-</html>" > $host_path/index.html
+</html>" > $host_path/index.php
 
 
 echo "<VirtualHost *:80>
