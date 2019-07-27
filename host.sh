@@ -34,7 +34,7 @@ echo "<html>
 echo "<VirtualHost *:80>
     ServerAdmin $admin_email
     ServerName $host_name
-    ServerAlias www.$host_name
+    ServerAlias www.$host_name *.$host_name
     DocumentRoot $host_path
         <Directory "$host_path">
 #           AllowOverride All
