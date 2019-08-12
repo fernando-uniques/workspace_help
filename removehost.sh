@@ -1,11 +1,11 @@
 if [ "$EUID" -ne 0]
-  then echo "Please, execute as sudo."
-  exit
+    then echo "Please, execute as sudo."
+    exit
 fi
 
 if [ -z "$1" ]
-        then echo "Please, specify the host name." 
-        exit
+    then echo "Please, specify the host name." 
+    exit
 fi
 
 mkdir -p /var/www/com
