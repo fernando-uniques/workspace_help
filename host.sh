@@ -8,10 +8,12 @@ if [ -z "$1" ]
     exit
 fi
 
-mkdir -p /var/www/com
-host_path="/var/www/com/$1"
-host_name="$1.com"
+test_host_path="/var/www/test_host"
+host_path="$test_host_path/$1"
+host_name="$1.test"
 admin_email="fernandorochaworld@gmail.com"
+
+mkdir -p $test_host_path
 
 echo "Creating host $host_name"
 
