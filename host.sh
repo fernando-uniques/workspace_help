@@ -1,3 +1,5 @@
+# use example: sudo ./host.sh <<domain name>> <<folder name>>
+
 if [ "$EUID" -ne 0]
     then echo "Please, execute as sudo."
     exit
@@ -9,9 +11,15 @@ if [ -z "$1" ]
 fi
 
 test_host_path="/var/www/test_host"
-host_path="$test_host_path/$1"
 host_name="$1.test"
 admin_email="fernandorochaworld@gmail.com"
+
+#subfolder
+if [ -z "$2" ]; then
+  host_path="$test_host_path/$1"
+else
+  host_path="$test_host_path/$2/$1"
+fi
 
 mkdir -p $test_host_path
 
@@ -21,17 +29,18 @@ mkdir -p $host_path
 chown -R $USER:$USER $host_path
 chmod -R 777 $host_path
 
-echo "<html>
-  <head>
-    <title>Welcome to $host_name!</title>
-  </head>
-  <body>
-    <h1>Success! On <?=date('Y-m-d H:i:s');?></h1>
-    <h2>www.$host_name VirtualHost is working!</h2>
-    <?php phpinfo(); ?>
-  </body>
-</html>" > $host_path/index.php
-
+if [ ! -f "$host_path/index.php"]; then
+  echo "<html>
+    <head>
+      <title>Welcome to $host_name!</title>
+    </head>
+    <body>
+      <h1>Success! On <?=date('Y-m-d H:i:s');?></h1>
+      <h2>www.$host_name VirtualHost is working!</h2>
+      <?php phpinfo(); ?>
+    </body>
+  </html>" > $host_path/index.php
+fi
 
 echo "<VirtualHost *:80>
     ServerAdmin $admin_email
